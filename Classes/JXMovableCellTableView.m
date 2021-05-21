@@ -10,7 +10,7 @@
 
 static NSTimeInterval kJXMovableCellAnimationTime = 0.25;
 
-@interface JXMovableCellTableView ()
+@interface JXMovableCellTableView ()<UIGestureRecognizerDelegate>
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGesture;
 @property (nonatomic, assign) CGFloat gestureMinimumPressDuration;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
@@ -81,7 +81,18 @@ static NSTimeInterval kJXMovableCellAnimationTime = 0.25;
 {
     _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(jx_processGesture:)];
     _longPressGesture.minimumPressDuration = _gestureMinimumPressDuration;
+    _longPressGesture.delegate = self;
     [self addGestureRecognizer:_longPressGesture];
+}
+#pragma mark UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    //如果点击的是点赞动画Btn就不执行手势操作
+    for (NSString *class in _noResponseClass) {
+        if ([NSStringFromClass([touch.view class]) isEqualToString:class]) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 - (void)jx_processGesture:(UILongPressGestureRecognizer *)gesture

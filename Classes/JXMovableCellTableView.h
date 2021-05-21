@@ -66,6 +66,8 @@
 @end
 
 @interface JXMovableCellTableView : UITableView
+///记录长按手势不响应的类
+@property (nonatomic,strong) NSArray<NSString *> *noResponseClass;
 
 @property (nonatomic, weak) id<JXMovableCellTableViewDataSource> dataSource;
 @property (nonatomic, weak) id<JXMovableCellTableViewDelegate> delegate;
